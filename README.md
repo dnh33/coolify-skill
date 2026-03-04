@@ -1,47 +1,56 @@
 # Coolify Skill for Claude Code
 
-Manage your entire [Coolify](https://coolify.io) infrastructure from Claude Code. Deploy apps, control databases, manage services, handle environment variables, and troubleshoot — all through natural language.
+[![Install Claude Code Skill](https://img.shields.io/badge/Claude_Code-Install_Skill-blue?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiPjxwYXRoIGQ9Ik0xMiAydjIwTTIgMTJoMjAiLz48L3N2Zz4=)](#install)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Coolify](https://img.shields.io/badge/Coolify-v4-6C47FF?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiLz48L3N2Zz4=)](https://coolify.io)
+[![API Endpoints](https://img.shields.io/badge/API_Endpoints-80+-orange?style=flat-square)](#api-coverage)
 
-## What It Does
+Manage your entire [Coolify](https://coolify.io) infrastructure from [Claude Code](https://claude.com/claude-code). Deploy apps, control databases, manage services, handle environment variables, and troubleshoot — all through natural language.
 
-This skill gives Claude Code deep knowledge of Coolify's API, architecture, and operations. Ask it to:
-
-- **Deploy & control** — start, stop, restart applications, databases, and services
-- **Create resources** — spin up apps from Git repos, Docker images, Dockerfiles, or Docker Compose
-- **Manage env vars** — list, set, bulk-update, and delete environment variables
-- **Monitor** — check deployment status, view logs, list resources across servers
-- **Database ops** — create databases (PostgreSQL, MySQL, MariaDB, MongoDB, Redis, ClickHouse, DragonFly, KeyDB), configure automated S3 backups
-- **Server management** — multi-server architecture, proxy config, Cloudflare tunnels
-- **Troubleshoot** — diagnose 502s, SSL issues, connection problems, stuck services
-
-Covers **all 80+ API endpoints** from the Coolify v4 source code.
+---
 
 ## Install
 
-```bash
-claude skill install danieldoesmedia/coolify-skill
-```
-
-Or manually — clone this repo into your Claude Code skills directory:
+### One-liner (recommended)
 
 ```bash
-git clone https://github.com/danieldoesmedia/coolify-skill.git ~/.claude/skills/coolify
+git clone https://github.com/danielhjermitslev/coolify-skill.git ~/.claude/skills/coolify
 ```
+
+### Manual
+
+Download this repo and drop the folder into `~/.claude/skills/coolify`. That's it — Claude Code auto-discovers skills on next session start.
+
+---
 
 ## Setup
 
-You need two environment variables for API access:
+Two environment variables are needed for API access:
 
 ```bash
 export COOLIFY_API_URL="https://coolify.example.com"
 export COOLIFY_API_TOKEN="your-bearer-token-here"
 ```
 
-Generate your API token in the Coolify dashboard under **Keys & Tokens → API tokens**. Use `*` permission for full management access.
+> **Get your token:** Coolify Dashboard → **Keys & Tokens** → **API tokens** → Create with `*` permission for full access.
 
-## Usage Examples
+---
 
-Just talk to Claude naturally:
+## What It Does
+
+This skill gives Claude Code deep knowledge of Coolify's API, architecture, and operations:
+
+| Capability | Examples |
+|---|---|
+| **Deploy & control** | Start, stop, restart applications, databases, and services |
+| **Create resources** | Spin up apps from Git repos, Docker images, Dockerfiles, or Compose |
+| **Environment vars** | List, set, bulk-update, and delete env vars |
+| **Monitor** | Deployment status, application logs, resource overview |
+| **Database ops** | Create 8 DB types, configure automated S3 backups |
+| **Server management** | Multi-server architecture, proxy config, Cloudflare tunnels |
+| **Troubleshoot** | Diagnose 502s, SSL issues, connection problems, stuck services |
+
+### Just Talk Naturally
 
 ```
 "List all my Coolify applications"
@@ -49,52 +58,32 @@ Just talk to Claude naturally:
 "Restart the PostgreSQL database"
 "Set NODE_ENV to production on my-app"
 "What's running on my Hetzner server?"
-"Create a new Redis database in the staging environment"
+"Create a new Redis database in staging"
 "Show me the deployment logs"
 "Why am I getting a 502 on my app?"
 ```
+
+---
 
 ## What's Included
 
 ```
 coolify-skill/
-├── SKILL.md                              # Core skill (auto-loaded on trigger)
-│   ├── API patterns & authentication
-│   ├── Common workflows with curl examples
-│   ├── Domain & SSL configuration
-│   ├── Environment variable management
-│   └── Troubleshooting quick reference
+├── SKILL.md                              # Core skill — auto-loaded on trigger
 ├── references/
 │   ├── api-endpoints.md                  # Complete API reference (80+ endpoints)
-│   └── server-management.md             # Server config, proxies, tunnels, backups
+│   └── server-management.md             # Servers, proxies, tunnels, backups, troubleshooting
 └── scripts/
-    └── coolify-api.sh                    # Standalone helper script
+    └── coolify-api.sh                    # Standalone CLI helper script
 ```
 
-### Progressive Disclosure
+The skill uses **progressive disclosure** — only loads what's needed:
 
-The skill loads efficiently:
+1. **Always in context** — name + description for trigger matching (~100 words)
+2. **On trigger** — SKILL.md with core workflows and API patterns
+3. **On demand** — reference files when deeper detail is needed
 
-1. **Always in context** — skill name + description (~100 words) for trigger matching
-2. **On trigger** — SKILL.md body with core workflows and API patterns
-3. **On demand** — reference files loaded only when deeper detail is needed
-
-## Helper Script
-
-`scripts/coolify-api.sh` can also be used standalone:
-
-```bash
-export COOLIFY_API_URL="https://coolify.example.com"
-export COOLIFY_API_TOKEN="your-token"
-
-./scripts/coolify-api.sh status              # Overview of all resources
-./scripts/coolify-api.sh list applications   # List all apps
-./scripts/coolify-api.sh deploy abc123       # Deploy an app
-./scripts/coolify-api.sh restart services xyz456
-./scripts/coolify-api.sh logs abc123
-./scripts/coolify-api.sh set-env applications abc123 NODE_ENV production
-./scripts/coolify-api.sh envs applications abc123
-```
+---
 
 ## API Coverage
 
@@ -112,19 +101,44 @@ export COOLIFY_API_TOKEN="your-token"
 | Cloud Tokens | 5 | CRUD, validate |
 | System | 4 | Health, version, enable/disable API |
 
+---
+
+## Helper Script
+
+`scripts/coolify-api.sh` also works standalone outside Claude Code:
+
+```bash
+export COOLIFY_API_URL="https://coolify.example.com"
+export COOLIFY_API_TOKEN="your-token"
+
+./scripts/coolify-api.sh status              # Overview of all resources
+./scripts/coolify-api.sh list applications   # List all apps
+./scripts/coolify-api.sh deploy abc123       # Deploy an app
+./scripts/coolify-api.sh restart services xyz456
+./scripts/coolify-api.sh logs abc123
+./scripts/coolify-api.sh set-env applications abc123 NODE_ENV production
+./scripts/coolify-api.sh envs applications abc123
+```
+
+---
+
 ## Requirements
 
-- A running Coolify instance (self-hosted or [Coolify Cloud](https://app.coolify.io))
+- [Claude Code CLI](https://claude.com/claude-code)
+- A running Coolify instance ([self-hosted](https://coolify.io/docs/get-started/installation) or [Coolify Cloud](https://app.coolify.io))
 - API token with appropriate permissions
-- Claude Code CLI
 
 ## Built From
 
 Sourced directly from:
-- [Coolify official documentation](https://coolify.io/docs) (including LLM-optimized docs)
-- [Coolify API routes source code](https://github.com/coollabsio/coolify) (`routes/api.php`)
+- [Coolify official docs](https://coolify.io/docs) (including LLM-optimized `/docs/llms-full.txt`)
+- [Coolify API source code](https://github.com/coollabsio/coolify) (`routes/api.php`)
 - [Coolify CLI](https://github.com/coollabsio/coolify-cli)
+
+## Author
+
+**Daniel Hjermitslev** — [danielhjermitslev](https://github.com/danielhjermitslev)
 
 ## License
 
-MIT
+[MIT](LICENSE)
