@@ -14,7 +14,7 @@ Manage your entire [Coolify](https://coolify.io) infrastructure from [Claude Cod
 ### One-liner (recommended)
 
 ```bash
-git clone https://github.com/danielhjermitslev/coolify-skill.git ~/.claude/skills/coolify
+git clone https://github.com/dnh33/coolify-skill.git ~/.claude/skills/coolify
 ```
 
 ### Manual
@@ -137,7 +137,7 @@ Sourced directly from:
 
 ## Author
 
-**Daniel Hjermitslev** — [danielhjermitslev](https://github.com/danielhjermitslev)
+**Daniel Hjermitslev** — [@dnh33](https://github.com/dnh33)
 
 ## License
 
